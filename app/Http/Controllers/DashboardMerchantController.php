@@ -11,7 +11,8 @@ class DashboardMerchantController extends Controller
      */
     public function index()
     {
-        //
+        echo "<a href='/merchant/category'>Category</a><br>";
+
     }
 
     /**
