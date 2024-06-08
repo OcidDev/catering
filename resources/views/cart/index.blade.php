@@ -18,11 +18,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $tax = 0;
+                            $subtotal = 0;
+                            @endphp
                             @foreach ($cart as $item)
                                 <tr>
-                                    {{-- @php
-                                        dd($cart);
-                                    @endphp --}}
+                                    @php
+                                    $subtotal += $item->price * $item->qty;
+
+                                    $tax += ($item->priceTax - $item->price) * $item->qty;
+                                    @endphp
                                     <td>{{ $item->name }}</td>
                                     <td>
                                         <form action="{{ route('cart.update', $item->id) }}" method="POST">
@@ -51,8 +57,12 @@
                                 @endforeach
 
                                 <tr>
+                                    <th colspan="3">Sub Total</th>
+                                    <th>Rp. {{ number_format($subtotal) }}</th>
+                                </tr>
+                                <tr>
                                     <th colspan="3">Tax</th>
-                                    <th>Rp. {{ number_format($item->priceTax) }} (15%)</th>
+                                    <th>Rp. {{ number_format($tax) }} (15%)</th>
                                 </tr>
                                 <tr>
                                     <th colspan="3">Total</th>
