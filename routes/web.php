@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\DashboardUserController;
@@ -35,6 +37,10 @@ Auth::routes();
 
 Route::prefix('user')->group(function () {
     Route::resource('dashboarduser', DashboardUserController::class);
+    Route::resource('cart', CartController::class);
+    Route::resource('checkout', CheckoutController::class);
+
+
     Route::resource('profile', UserProfileController::class);
 });
 
