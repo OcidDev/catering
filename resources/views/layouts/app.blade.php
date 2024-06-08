@@ -33,7 +33,7 @@
                     <ul class="navbar-nav me-auto">
                         @if(Auth::check() && Auth::user()->hasRole('merchant'))
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <a class="nav-link active" href="#">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('category.index') }}">Category</a>
@@ -46,7 +46,12 @@
                             </li>
 
                         @elseif(Auth::check() && Auth::user()->hasRole('user'))
-
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ route('cart.index') }}">Cart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('order.index') }}">Order</a>
+                            </li>
                         @endif
 
                     </ul>

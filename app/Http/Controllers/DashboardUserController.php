@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DashboardUserController extends Controller
 {
@@ -31,7 +32,11 @@ class DashboardUserController extends Controller
      */
     public function create()
     {
-        //
+        // tampilkan data cart
+        $cart = Cart::content();
+
+        dd($cart);
+
     }
 
     /**
@@ -39,15 +44,40 @@ class DashboardUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validasi
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'price' => 'required',
+        ]);
+
+        // insert data ke cart
+        Cart::add([
+            'id' => $request->id,
+            'name' => $request->name,
+            'price' => $request->price,
+            'weight' => 0,
+            'options' => []
+        ]);
+
+        // tampilkan data cart
+        $cart = Cart::content();
+        dd($cart);
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show( string $id)
     {
-        //
+        // menampilkan data cart
+        $cart = Cart::content();
+
+        // menampilkan cart
+        dd($cart);
+
+
     }
 
     /**
@@ -63,7 +93,19 @@ class DashboardUserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // validasi
+        $request->validate([
+            'qty' => 'required',
+        ]);
+
+        // update data cart
+        Cart::update($id, $request->qty);
+
+        // tampilkan data cart  setelah diupdate
+        return redirect()->route('cart.index')->with('success', 'Data berhasil diupdate');
+
+
+
     }
 
     /**
