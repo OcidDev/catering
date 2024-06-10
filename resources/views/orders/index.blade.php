@@ -26,7 +26,17 @@
                                 <tr>
                                     <td>{{ $item->invoice }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->status }}</td>
+                                    <td>
+                                        @if ($item->status == 'pending')
+                                            <span class="badge bg-warning text-dark">{{ $item->status }}</span>
+                                        @elseif ($item->status == 'paid')
+                                            <span class="badge bg-success">{{ $item->status }}</span>
+                                        @elseif ($item->status == 'cancelled')
+                                            <span class="badge bg-danger">{{ $item->status }}</span>
+                                        @else
+                                            <span class="badge bg-info">{{ $item->status }}</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $item->payment_method }}</td>
                                     <td>{{ $item->payment_date }}</td>
                                     <td>

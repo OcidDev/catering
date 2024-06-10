@@ -18,7 +18,7 @@ class CheckoutController extends Controller
         $invoice = 'INV-'.time();
         $total = Cart::total();
         $status = 'pending';
-        $paymennt_date = time();
+        $paymennt_date = now();
         // dd($cart);
 
         // cek ada berapa merchant pada 1 onvoice (dilihat dari menus yang ada di cart)
@@ -34,9 +34,17 @@ class CheckoutController extends Controller
                 'payment_date' => $paymennt_date,
                 'status' => $status,
             ]);
+            // order detail
+            $order->details()->create([
+                'order_id' => $order->id,
+                'menu_id' => $item->id,
+                'quantity' => $item->qty,
+                'price' => $item->price,
+            ]);
         }
-        // Cart::destroy();
-        return redirect()->route('cart.index')->with('success', 'Pesanan berhasil dibuat, silahkan lakukan pembayaran.');
+        Cart::destroy();
+        // redirect ke halaman invoice
+        return redirect()->route('invoice.index', $invoice);
 
 
     }

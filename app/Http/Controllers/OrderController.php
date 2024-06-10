@@ -14,12 +14,21 @@ class OrderController extends Controller
     {
         // tampilkan data order invoice unique distinct dan merchant id
 
+        // kondisi jika user adalah merchant
+        if (auth()->user()->role == 'merchant') {
+            $orders = Order::join('users', 'orders.customer_id', '=', 'users.id')
+            ->select('orders.invoice','users.id', 'users.name','orders.total_price', 'orders.status', 'orders.payment_method', 'orders.payment_date')
+            ->where('orders.merchant_id', auth()->user()->id)
+            ->distinct()
+            ->get();
+        } else {
+            $orders = Order::join('users', 'orders.merchant_id', '=', 'users.id')
+            ->select('orders.invoice','users.id', 'users.name','orders.total_price', 'orders.status', 'orders.payment_method', 'orders.payment_date')
+            ->where('orders.customer_id', auth()->user()->id)
+            ->distinct()
+            ->get();
+        }
 
-        $orders = Order::join('users', 'orders.merchant_id', '=', 'users.id')
-                        ->select('orders.invoice','users.id', 'users.name','orders.total_price', 'orders.status', 'orders.payment_method', 'orders.payment_date')
-                        ->distinct()
-                        ->get();
-                        // dd($orders);
 
         return view('orders.index', compact('orders'));
 

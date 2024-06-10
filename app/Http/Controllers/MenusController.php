@@ -17,7 +17,7 @@ class MenusController extends Controller
     public function index()
     {
         // tampilkan data
-        $menus = Menu::all();
+        $menus = Menu::all()->where('merchant_id', Auth::user()->id);
         return view('menu.index', compact('menus'));
 
     }

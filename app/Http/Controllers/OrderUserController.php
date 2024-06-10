@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use Illuminate\Http\Request;
 
-class DashboardMerchantController extends Controller
+class OrderUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $order = Order::where('merchant_id', auth()->user()->id)->get();
-        return view('dashboardmerchant.index', compact('order'));
-
-
+        //
     }
 
     /**

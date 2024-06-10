@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('merchant_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('total_price');
-            $table->enum('status', ['pending', 'paid', 'cancelled', 'refunded', 'delivered', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'paid', 'cancelled','completed'])->default('pending');
             $table->enum('payment_method', ['cash', 'bank_transfer'])->default('cash');
             $table->string('payment_date');
             $table->timestamps();
