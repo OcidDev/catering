@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -13,7 +15,38 @@ class CheckoutController extends Controller
     public function index()
     {
         $cart = Cart::content();
-        dd($cart);
+        $invoice = 'INV-'.time();
+        $total = Cart::total();
+        $status = 'pending';
+        $paymennt_date = now();
+        // dd($cart);
+
+        // cek ada berapa merchant pada 1 onvoice (dilihat dari menus yang ada di cart)
+        $merchant = 0;
+        foreach ($cart as $item) {
+            $menu_id = $item->id;
+            $merchant = Menu::where('id', $menu_id)->first();
+            $order = Order::create([
+                'invoice' => $invoice,
+                'customer_id' => auth()->user()->id,
+                'merchant_id' => $merchant->merchant_id,
+                'total_price' => $total,
+                'payment_date' => $paymennt_date,
+                'status' => $status,
+            ]);
+            // order detail
+            $order->details()->create([
+                'order_id' => $order->id,
+                'menu_id' => $item->id,
+                'quantity' => $item->qty,
+                'price' => $item->price,
+            ]);
+        }
+        Cart::destroy();
+        // redirect ke halaman invoice
+        return redirect()->route('invoice.index', $invoice);
+
+
     }
 
     /**
@@ -37,7 +70,8 @@ class CheckoutController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+
     }
 
     /**

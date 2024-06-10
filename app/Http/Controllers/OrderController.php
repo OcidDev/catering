@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -11,7 +12,26 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        // tampilkan data order invoice unique distinct dan merchant id
+
+        // kondisi jika user adalah merchant
+        if (auth()->user()->role == 'merchant') {
+            $orders = Order::join('users', 'orders.customer_id', '=', 'users.id')
+            ->select('orders.invoice','users.id', 'users.name','orders.total_price', 'orders.status', 'orders.payment_method', 'orders.payment_date')
+            ->where('orders.merchant_id', auth()->user()->id)
+            ->distinct()
+            ->get();
+        } else {
+            $orders = Order::join('users', 'orders.merchant_id', '=', 'users.id')
+            ->select('orders.invoice','users.id', 'users.name','orders.total_price', 'orders.status', 'orders.payment_method', 'orders.payment_date')
+            ->where('orders.customer_id', auth()->user()->id)
+            ->distinct()
+            ->get();
+        }
+
+
+        return view('orders.index', compact('orders'));
+
     }
 
     /**
@@ -33,10 +53,14 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, string $order)
     {
-        //
-    }
+        // tampilkan detail order
+        $orders = Order::join('users', 'orders.merchant_id', '=', 'users.id')
+        ->select('orders.invoice','users.id', 'users.name','orders.total_price', 'orders.status', 'orders.payment_method', 'orders.payment_date')
+        ->distinct()
+        ->get();
+        return view('orders.show', compact('orders'));    }
 
     /**
      * Show the form for editing the specified resource.

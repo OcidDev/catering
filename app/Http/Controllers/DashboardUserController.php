@@ -15,7 +15,7 @@ class DashboardUserController extends Controller
     {
 
 
-        $perPage = 5;
+        $perPage = 4;
         $menus = Menu::query();
 
         if ($request->cari !== null) {

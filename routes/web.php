@@ -36,6 +36,9 @@ Auth::routes();
 
 
 Route::prefix('user')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('dashboarduser.index');
+    });
     Route::resource('dashboarduser', DashboardUserController::class);
     Route::resource('cart', CartController::class);
     Route::resource('checkout', CheckoutController::class);
@@ -45,6 +48,9 @@ Route::prefix('user')->group(function () {
 });
 
 Route::prefix('merchant')->group(function (){
+    Route::get('/', function () {
+        return redirect()->route('dashboardmerchant.index');
+    });
     Route::resource('dashboardmerchant', DashboardMerchantController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('menu', MenusController::class);
